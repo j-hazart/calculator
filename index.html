@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Calculator</title>
+  </head>
+  <body>
+    <main
+      class="flex w-screen h-screen justify-center items-center bg-[#26282b]"
+    >
+      <div
+        class="flex flex-col bg-[#26282b] rounded-3xl shadow-[-8px_-8px_15px_#303337,8px_8px_15px_#1d1f21] w-[500px] h-[800px] p-4 gap-4"
+      >
+        <div
+          class="flex flex-col bg-[#26282b] justify-end text-4xl items-end p-4 flex-1 flex-grow rounded-lg shadow-[inset_-3px_-3px_5px_#303337,inset_3px_3px_10px_#1d1f21]"
+        >
+          <div id="historique" class="text-[#303337]"></div>
+          <div
+            id="in-out"
+            class="font-bold text-[#444648] drop-shadow-[inset_3px_3px_0.5px_#aaa9bc]"
+          ></div>
+        </div>
+        <div
+          class="grid grid-cols-4 grid-rows-5 gap-4 flex-1 flex-grow-[5] font-bold text-2xl text-white"
+        >
+          <button
+            id="("
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            (
+          </button>
+          <button
+            id=")"
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            )
+          </button>
+          <button
+            id="/"
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            /
+          </button>
+          <button
+            id="x"
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            *
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            7
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            8
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            9
+          </button>
+          <button
+            id="-"
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            -
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            4
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            5
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            6
+          </button>
+          <button
+            id="+"
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            1
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            2
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            3
+          </button>
+          <button
+            type="button"
+            class="numbers bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            0
+          </button>
+          <button
+            id="."
+            type="button"
+            class="operators bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            .
+          </button>
+
+          <button
+            id="C"
+            type="button"
+            class="bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21]"
+          >
+            C
+          </button>
+          <button
+            id="egale"
+            type="button"
+            class="bg-[#26282b] rounded-xl active:text-[#ffffff50] active:shadow-[inset_-3px_-3px_10px_#303337,inset_3px_3px_10px_#1d1f21] shadow-[-3px_-3px_10px_#303337,3px_3px_10px_#1d1f21] col-end-5 row-start-4 row-span-2"
+          >
+            =
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
