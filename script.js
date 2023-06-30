@@ -1,4 +1,4 @@
-const historique = document.querySelector("#historique");
+/* const historique = document.querySelector("#historique");
 const inOut = document.querySelector("#in-out");
 const reset = document.querySelector("#C");
 const equal = document.querySelector("#egale");
@@ -15,6 +15,7 @@ function cleanScreen() {
 reset.addEventListener("click", cleanScreen);
 equal.addEventListener("click", () => {
   let test = document.querySelector("#in-out");
+  console.log(test.innerHTML);
   calculate(test.innerHTML);
 });
 
@@ -61,14 +62,28 @@ function calculate(str) {
   console.log(newExpression);
   const result = eval(newExpression.join(""));
   historique.innerHTML = str + " = " + result + "<br>";
-  inOut.innerHTML = result;
-  /*  try {
+  inOut.innerHTML = result; */
+/*  try {
     const result = eval(newExpression.join(""));
     historique.innerHTML = str + " = " + result + "<br>";
     inOut.innerHTML = result;
   } catch {
     historique.innerHTML = "Expression incorrect";
   } */
-}
+/* }
 pressButton(numbers);
-pressButton(operators);
+pressButton(operators); */
+const inOut = document.querySelector("#in-out");
+const buttons = document.querySelectorAll("button");
+
+const displayOnScreen = (e) => {
+  const value = e.target.innerText;
+  inOut.innerHTML = value;
+};
+
+for (let button of buttons) {
+  const value = button.innerText;
+  if (value !== "C" && value !== "=") {
+    button.addEventListener("click", (e) => displayOnScreen(e));
+  }
+}
