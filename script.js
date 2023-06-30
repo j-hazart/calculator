@@ -58,13 +58,17 @@ function calculate(str) {
     }
   }
 
-  try {
+  console.log(newExpression);
+  const result = eval(newExpression.join(""));
+  historique.innerHTML = str + " = " + result + "<br>";
+  inOut.innerHTML = result;
+  /*  try {
     const result = eval(newExpression.join(""));
     historique.innerHTML = str + " = " + result + "<br>";
     inOut.innerHTML = result;
   } catch {
     historique.innerHTML = "Expression incorrect";
-  }
+  } */
 }
 pressButton(numbers);
 pressButton(operators);
