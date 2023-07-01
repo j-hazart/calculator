@@ -75,35 +75,39 @@ pressButton(numbers);
 pressButton(operators); */
 const inOut = document.querySelector("#in-out");
 const buttons = document.querySelectorAll("button");
-const operators = /-|\+|\*|\/|\(|\)/;
-const operatorsWithoutParenthese = /-|\+|\*|\//;
+const operators = /-|\+|\*|\//;
+const brackets = /\(|\)/;
+const allOperators = /-|\+|\*|\/|\(|\)/;
 
-const dotController = () => {};
+const dotController = (oldExpression, lastCaracter) => {
+  const currentNumbers = oldExpression.split(allOperators);
+  const lastNumber = currentNumbers[currentNumbers.length - 1];
+  if (lastNumber.includes(".") || lastCaracter === ")") {
+    return false;
+  } else {
+    if (!oldExpression || allOperators.test(lastCaracter)) {
+      inOut.innerText += "0";
+    }
+    return true;
+  }
+};
 
 const isInputValid = (oldExpression, buttonValue) => {
-  const currentNumbers = oldExpression.split(operators);
-  const lastNumber = currentNumbers[currentNumbers.length - 1];
-  const lastCaracter = oldExpression[oldExpression.length - 1];
-  /* const newExpression = oldExpression + buttonValue; */
+  const lastCaracterIndex = oldExpression.length - 1;
+  const lastCaracter = oldExpression[lastCaracterIndex];
+
+  if (operators.test(buttonValue) && (!oldExpression || lastCaracter === "(")) {
+    inOut.innerText += "0";
+  } else if (operators.test(lastCaracter)) {
+    inOut.innerText = oldExpression.slice(0, lastCaracterIndex);
+  }
 
   if (buttonValue === ".") {
-    if (lastNumber.includes(".")) {
-      return false;
-    } else {
-      if (!oldExpression || operators.test(lastCaracter)) {
-        inOut.innerText += "0";
-      }
-      return true;
-    }
-  } else if (operatorsWithoutParenthese.test(buttonValue)) {
-    if (!oldExpression || lastCaracter === "(") {
-      inOut.innerText += "0";
-    } else if (operatorsWithoutParenthese.test(lastCaracter)) {
-      inOut.innerText = inOut.innerText.slice(0, inOut.innerText.length - 1);
-    }
-    return true;
+    return dotController(oldExpression, lastCaracter);
+  } else if (brackets.test(buttonValue)) {
+    return !oldExpression && buttonValue === ")" ? false : true;
   } else {
-    return true;
+    return oldExpression === "0" ? false : true;
   }
 };
 
