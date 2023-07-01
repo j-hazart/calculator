@@ -75,15 +75,46 @@ pressButton(numbers);
 pressButton(operators); */
 const inOut = document.querySelector("#in-out");
 const buttons = document.querySelectorAll("button");
+const operators = /-|\+|\*|\/|\(|\)/;
+
+const dotController = () => {};
+
+const isInputValid = (oldExpression, buttonValue) => {
+  const currentNumbers = oldExpression.split(/-|\+|\*|\/|\(|\)/);
+  const lastNumber = currentNumbers[currentNumbers.length - 1];
+  /* const newExpression = oldExpression + buttonValue; */
+
+  if (buttonValue === ".") {
+    if (lastNumber.includes(".")) {
+      return false;
+    } else {
+      if (
+        !oldExpression ||
+        operators.test(oldExpression[oldExpression.length - 1])
+      ) {
+        inOut.innerText += "0";
+      }
+      return true;
+    }
+  } else {
+    return true;
+  }
+};
 
 const displayOnScreen = (e) => {
   const value = e.target.innerText;
-  inOut.innerHTML = value;
+  if (isInputValid(inOut.innerText, value)) {
+    inOut.innerText += value;
+  }
 };
 
 for (let button of buttons) {
   const value = button.innerText;
   if (value !== "C" && value !== "=") {
     button.addEventListener("click", (e) => displayOnScreen(e));
+  } else if (value !== "C") {
+    button.addEventListener("click", (e) => cleanScreen(e));
+  } else {
+    button.addEventListener("click", (e) => calculate(e));
   }
 }
