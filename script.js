@@ -76,26 +76,32 @@ pressButton(operators); */
 const inOut = document.querySelector("#in-out");
 const buttons = document.querySelectorAll("button");
 const operators = /-|\+|\*|\/|\(|\)/;
+const operatorsWithoutParenthese = /-|\+|\*|\//;
 
 const dotController = () => {};
 
 const isInputValid = (oldExpression, buttonValue) => {
-  const currentNumbers = oldExpression.split(/-|\+|\*|\/|\(|\)/);
+  const currentNumbers = oldExpression.split(operators);
   const lastNumber = currentNumbers[currentNumbers.length - 1];
+  const lastCaracter = oldExpression[oldExpression.length - 1];
   /* const newExpression = oldExpression + buttonValue; */
 
   if (buttonValue === ".") {
     if (lastNumber.includes(".")) {
       return false;
     } else {
-      if (
-        !oldExpression ||
-        operators.test(oldExpression[oldExpression.length - 1])
-      ) {
+      if (!oldExpression || operators.test(lastCaracter)) {
         inOut.innerText += "0";
       }
       return true;
     }
+  } else if (operatorsWithoutParenthese.test(buttonValue)) {
+    if (!oldExpression || lastCaracter === "(") {
+      inOut.innerText += "0";
+    } else if (operatorsWithoutParenthese.test(lastCaracter)) {
+      inOut.innerText = inOut.innerText.slice(0, inOut.innerText.length - 1);
+    }
+    return true;
   } else {
     return true;
   }
