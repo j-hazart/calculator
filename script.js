@@ -1,22 +1,3 @@
-/* 
-window.addEventListener("keydown", (e) => {
-  let test = document.querySelector("#in-out");
-  if (/[0-9]|-|\.|\+|\*|\/|\(|\)/.test(e.key)) {
-    const value = e.key;
-    const currentValue = inOut.innerHTML;
-    const newValue = currentValue + value;
-    inOut.innerHTML = newValue;
-  } else if (e.key === "Enter") {
-    calculate(test.innerHTML);
-  } else if (e.key === "Backspace") {
-    const testTbl = test.innerHTML.split("");
-    testTbl.pop();
-    test.innerHTML = testTbl.join("");
-  } else if (e.key === "Delete") {
-    cleanScreen();
-  }
-}); */
-
 const inOut = document.querySelector("#in-out");
 const historique = document.querySelector("#historique");
 const buttons = [...document.querySelectorAll("button")];
@@ -132,3 +113,20 @@ const buttonsFunction = (str, callback) => {
 
 buttonsFunction("C", cleanScreen);
 buttonsFunction("=", calculate);
+
+window.addEventListener("keydown", (e) => {
+  if (/[0-9]|-|\.|\+|\*|\/|\(|\)/.test(e.key)) {
+    const value = e.key;
+    if (isInputValid(inOut.innerText, value)) {
+      inOut.innerText += value;
+    }
+  } else if (e.key === "Enter") {
+    calculate();
+  } else if (e.key === "Backspace") {
+    const testTbl = inOut.innerText.split("");
+    testTbl.pop();
+    inOut.innerText = testTbl.join("");
+  } else if (e.key === "Delete") {
+    cleanScreen();
+  }
+});
