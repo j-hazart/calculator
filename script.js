@@ -1,35 +1,4 @@
-/* const historique = document.querySelector("#historique");
-const inOut = document.querySelector("#in-out");
-const reset = document.querySelector("#C");
-const equal = document.querySelector("#egale");
-
-const numbers = document.querySelectorAll(".numbers");
-
-const operators = document.querySelectorAll(".operators");
-
-function cleanScreen() {
-  historique.innerHTML = "";
-  inOut.innerHTML = "";
-}
-
-reset.addEventListener("click", cleanScreen);
-equal.addEventListener("click", () => {
-  let test = document.querySelector("#in-out");
-  console.log(test.innerHTML);
-  calculate(test.innerHTML);
-});
-
-function pressButton(buttons) {
-  buttons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      const value = event.target.innerHTML;
-      const currentValue = inOut.innerHTML;
-      const newValue = currentValue + value;
-      inOut.innerHTML = newValue;
-    });
-  });
-}
-
+/* 
 window.addEventListener("keydown", (e) => {
   let test = document.querySelector("#in-out");
   if (/[0-9]|-|\.|\+|\*|\/|\(|\)/.test(e.key)) {
@@ -46,69 +15,68 @@ window.addEventListener("keydown", (e) => {
   } else if (e.key === "Delete") {
     cleanScreen();
   }
-});
-function calculate(str) {
-  const expression = str.split("");
+}); */
 
-  const newExpression = expression.map((e) => {
-    return /[0-9]/.test(e) ? parseInt(e) : e;
-  });
-  for (let i = 0; i < newExpression.length; i++) {
-    if (newExpression[i] === "(" && typeof newExpression[i - 1] === "number") {
-      newExpression.splice(i, 0, "*");
-    }
-  }
-
-  console.log(newExpression);
-  const result = eval(newExpression.join(""));
-  historique.innerHTML = str + " = " + result + "<br>";
-  inOut.innerHTML = result; */
-/*  try {
-    const result = eval(newExpression.join(""));
-    historique.innerHTML = str + " = " + result + "<br>";
-    inOut.innerHTML = result;
-  } catch {
-    historique.innerHTML = "Expression incorrect";
-  } */
-/* }
-pressButton(numbers);
-pressButton(operators); */
 const inOut = document.querySelector("#in-out");
-const buttons = document.querySelectorAll("button");
+const historique = document.querySelector("#historique");
+const buttons = [...document.querySelectorAll("button")];
 const operators = /-|\+|\*|\//;
 const brackets = /\(|\)/;
-const allOperators = /-|\+|\*|\/|\(|\)/;
+const mathExpressions = /-|\+|\*|\/|\(|\)/;
 
-const dotController = (oldExpression, lastCaracter) => {
-  const currentNumbers = oldExpression.split(allOperators);
-  const lastNumber = currentNumbers[currentNumbers.length - 1];
-  if (lastNumber.includes(".") || lastCaracter === ")") {
-    return false;
-  } else {
-    if (!oldExpression || allOperators.test(lastCaracter)) {
-      inOut.innerText += "0";
-    }
-    return true;
-  }
+const insertZero = () => {
+  inOut.innerText += "0";
+};
+const insertMultiplicator = () => {
+  inOut.innerText += "*";
+};
+const removeLastCaracter = (oldExpression, lastCaracterIndex) => {
+  inOut.innerText = oldExpression.slice(0, lastCaracterIndex);
 };
 
 const isInputValid = (oldExpression, buttonValue) => {
   const lastCaracterIndex = oldExpression.length - 1;
   const lastCaracter = oldExpression[lastCaracterIndex];
-
-  if (operators.test(buttonValue) && (!oldExpression || lastCaracter === "(")) {
-    inOut.innerText += "0";
-  } else if (operators.test(lastCaracter)) {
-    inOut.innerText = oldExpression.slice(0, lastCaracterIndex);
-  }
+  const isLastCaracterAnOperator = operators.test(lastCaracter);
+  const isLastCaracterALeftBracket = lastCaracter === "(";
+  const isLastCaracterADot = lastCaracter === ".";
+  const isLastCaracterAMathExpressions = mathExpressions.test(lastCaracter);
+  const isButtonValueAnOperator = operators.test(buttonValue);
+  const isButtonValueABracket = brackets.test(buttonValue);
 
   if (buttonValue === ".") {
-    return dotController(oldExpression, lastCaracter);
-  } else if (brackets.test(buttonValue)) {
-    return !oldExpression && buttonValue === ")" ? false : true;
-  } else {
-    return oldExpression === "0" ? false : true;
+    return dotController(
+      oldExpression,
+      lastCaracter,
+      isLastCaracterAMathExpressions
+    );
   }
+
+  if (isButtonValueAnOperator) {
+    return operatorsController(
+      oldExpression,
+      isLastCaracterALeftBracket,
+      isLastCaracterAnOperator,
+      lastCaracterIndex,
+      isLastCaracterADot,
+      buttonValue
+    );
+  }
+
+  if (isButtonValueABracket) {
+    return bracketsController(
+      oldExpression,
+      isLastCaracterAnOperator,
+      isLastCaracterALeftBracket,
+      isLastCaracterAMathExpressions,
+      isLastCaracterADot,
+      lastCaracterIndex,
+      buttonValue,
+      lastCaracter
+    );
+  }
+  lastCaracter === ")" && insertMultiplicator();
+  return !(oldExpression === "0");
 };
 
 const displayOnScreen = (e) => {
@@ -118,13 +86,49 @@ const displayOnScreen = (e) => {
   }
 };
 
-for (let button of buttons) {
-  const value = button.innerText;
-  if (value !== "C" && value !== "=") {
-    button.addEventListener("click", (e) => displayOnScreen(e));
-  } else if (value !== "C") {
-    button.addEventListener("click", (e) => cleanScreen(e));
-  } else {
-    button.addEventListener("click", (e) => calculate(e));
+function calculate(e) {
+  const lastCaracter = inOut.innerText[inOut.innerText.length - 1];
+  const leftBracketCount = inOut.innerText
+    .split("")
+    .filter((x) => x === "(").length;
+  const rightBracketCount = inOut.innerText
+    .split("")
+    .filter((x) => x === ")").length;
+  if (rightBracketCount < leftBracketCount) {
+    inOut.innerText += ")".repeat(leftBracketCount - rightBracketCount);
   }
+
+  if (operators.test(lastCaracter)) {
+    const lastCaracterIndex = inOut.innerText.length - 1;
+    const newExpression = inOut.innerText.slice(0, lastCaracterIndex);
+    console.log(newExpression);
+    inOut.innerText += eval(newExpression);
+  }
+  if (inOut.innerText.slice(-2) === "()") {
+    inOut.innerText = inOut.innerText.slice(0, -3);
+  }
+  if (!inOut.innerText) {
+    inOut.innerText += "0";
+  }
+  const result = eval(inOut.innerText);
+  historique.innerText = inOut.innerText + " =";
+  inOut.innerText = result;
 }
+function cleanScreen(e) {
+  inOut.innerText = "";
+  historique.innerText = "";
+}
+buttons
+  .filter((button) => !["C", "="].includes(button.innerText))
+  .forEach((button) =>
+    button.addEventListener("click", (e) => displayOnScreen(e))
+  );
+
+const buttonsFunction = (str, callback) => {
+  buttons
+    .filter((button) => button.innerText === str)
+    .forEach((button) => button.addEventListener("click", (e) => callback(e)));
+};
+
+buttonsFunction("C", cleanScreen);
+buttonsFunction("=", calculate);
